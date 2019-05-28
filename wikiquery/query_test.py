@@ -3,12 +3,13 @@ from qwikidata.sparql import (get_subclasses_of_item,
 import json
 
 sparql_query = """
-SELECT ?item ?itemLabel ?itemDescription ?into ?atLabel
+SELECT ?item ?itemLabel ?itemDescription ?into ?atLabel ?coord
 WHERE {
   ?item wdt:P31/wdt:P279* wd:Q55659167;
         wdt:P17 wd:Q865.
   OPTIONAL { ?item wdt:P403 ?into. }
   OPTIONAL { ?item wdt:P131 ?at. }
+  OPTIONAL { ?item wdt:P625 ?coord. }
   SERVICE wikibase:label { bd:serviceParam wikibase:language "zh-tw, zh-hant, zh, en". }
 }
 """
@@ -18,6 +19,6 @@ res = return_sparql_query_results(sparql_query)
 #for p in res['results']['bindings']:
 #		print('name: ' + p['itemLabel']['value'])
 jsonfile = json.dumps(res)
-fo = open("/usr/bcsrcsp/wikiquery/foo.json", "w")
+fo = open("foo.json", "w")
 fo.write(jsonfile)
 fo.close()
