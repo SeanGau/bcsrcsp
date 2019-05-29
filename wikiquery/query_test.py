@@ -10,7 +10,7 @@ WHERE {
   OPTIONAL { ?item wdt:P403 ?into. }
   OPTIONAL { ?item wdt:P131 ?at. }
   OPTIONAL { ?item wdt:P625 ?coord. }
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "zh-tw, zh-hant, zh, en". }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "zh-tw, zh-hant, zh". }
 }
 """
 # 取得位在中華民國的天然水體
@@ -19,6 +19,6 @@ res = return_sparql_query_results(sparql_query)
 #for p in res['results']['bindings']:
 #		print('name: ' + p['itemLabel']['value'])
 jsonfile = json.dumps(res)
-fo = open("foo.json", "w")
+fo = open("foo.json", "w+")
 fo.write(jsonfile)
 fo.close()
