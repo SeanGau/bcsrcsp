@@ -12,27 +12,28 @@
 		<link href="http://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet" type="text/css">
 		<style>  <!--視窗大小控制-->
 			@media (min-width: 0px) {
-				.container{
+				#nm-screen{
 					display: none;
+					background-color: red;					
 				}
-				.container_min{
+				#sm-screen{
 					display: flex;
 				}
 			}
 			@media (min-width: 576px) {
-				.container_min{
+				#sm-screen{
 					display: none;
 				}
-				.container{
+				#nm-screen{
 					display: flex;
 					background-color: yellow;
 				}
 			}
 			@media (min-width: 768px) {
-				.container_min{
+				#sm-screen{
 					display: none;
 				}
-				.container{
+				#nm-screen{
 					display: flex;
 					background-color: orange;
 				}
@@ -44,7 +45,11 @@
 			html, body {
 				height: 100%;
 			}
-			.container {
+			a, h1, h2 {
+				font-family: 'noto sans tc';
+				text-decoration: none;
+			}
+			#sm-screen, #nm-screen {
 				height: 100vh;
 			}
 			#map {				
@@ -54,11 +59,11 @@
 		</style>
 	</head>
 	<body>
-			<div class="container_min" style="border-radius: 20px;">
-				<div class="d-flex flex-column"><h2>畫面太小囉！</h2></div>
+			<div id="sm-screen" style="border-radius: 20px;">
+				<div class="d-flex flex-column"><h2>手機螢幕尺寸</h2></div>
 			</div>
-			<div class="container d-flex flex-column">
-				<div class=""><h2>hello world</h2></div>
+			<div id="nm-screen" class="d-flex flex-column">
+				<div><h2>大河小溪全民齊督工</h2></div>
 				<div id="map" class="container-fluid"></div>
 			</div>
 			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -95,7 +100,7 @@
 				L.control.layers(baseMaps, overlayMaps).addTo(mymap);				
 				
 				$('#map').on('click', '#btn1', function() {
-					alert('Hello clicker!');
+					alert('BCS!!');
 				});
 			</script>
 			</script>
