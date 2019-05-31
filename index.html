@@ -8,10 +8,7 @@
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
 		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"  integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="  crossorigin=""></script>
-<<<<<<< HEAD
-=======
 		<script src="./KML.js"></script>
->>>>>>> add osm_river.kml and kml plugin
 		<link href="http://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet" type="text/css">
 		<style>  <!--視窗大小控制-->
 			@media (min-width: 0px) {
@@ -82,13 +79,8 @@
 					layers: [satellite, satellite_street, streets],
 					zoomControl:true
 				});				
-<<<<<<< HEAD
-				var btn1id="btn1";
-				
-=======
 				var btn1id="btn1";				
 				var river_file = new L.KML("src/osm_river.kml", {async: true});
->>>>>>> add osm_river.kml and kml plugin
 				L.marker([25.1426293,121.4592866]).addTo(mymap).bindPopup(' <button class="btn btn-info" id="'+btn1id+'">CLICK ME</button><p>hello</p> ');
 				
 				var baseMaps = {
@@ -97,12 +89,8 @@
 					"街道圖": streets,
 				};
 				
-<<<<<<< HEAD
-				var overlayMaps = {				
-=======
 				var overlayMaps = {			
 					"河川河道": river_file,
->>>>>>> add osm_river.kml and kml plugin
 				};
 				L.control.layers(baseMaps, overlayMaps).addTo(mymap);				
 				
