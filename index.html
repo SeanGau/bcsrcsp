@@ -7,8 +7,9 @@
 		<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+		<link rel="stylesheet" href="leaflet-search.css" />
 		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"  integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="  crossorigin=""></script>
-		<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-omnivore/v0.3.1/leaflet-omnivore.min.js'></script>
+		<script src="leaflet-search.js"></script>
 		<script src="src/osm_river.geojson"></script>
 		<link href="http://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet" type="text/css">
 		<style>  <!--視窗大小控制-->
@@ -103,14 +104,23 @@
 					layer.bindPopup("name: " + features.properties.name + "<br>wikidata: " + features.properties.wikidata);
 				}
 				
+				var river_info_layer = L.geoJSON(river_geojson, {
+					pointToLayer: function (feature, latlng) {
+					},					
+					onEachFeature: onEachFeature,
+					style: {
+						"weight": 50,
+						"opacity": 0.01,
+					}
+				});
 				var river_layer = L.geoJSON(river_geojson, {
 					pointToLayer: function (feature, latlng) {
 					},					
 					onEachFeature: onEachFeature,
 					style: {
-						"weight": 5,
-						"opacity": 0.5,
-						"color": "#66B2FF"
+						"weight": 3,
+						"opacity": 0.75,
+						"bubblingMouseEvents": false
 					}
 				});
 				//river_layer.addTo(mymap);
@@ -140,8 +150,41 @@
 				
 				var overlayMaps = {			
 					"河川河道": river_layer,
-				};				
+				};								
+
+				var searchControl = new L.Control.Search({
+					layer: river_layer,
+					propertyName: 'name',
+					marker: false,
+					moveToLocation: function(latlng, title, map) {
+						//map.fitBounds( latlng.layer.getBounds() );
+						var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+						map.setView(latlng, zoom); // access the zoom
+					}
+				});
+
+				searchControl.on('search:locationfound', function(e) {
+					
+					//console.log('search:locationfound', );
+
+					//map.removeLayer(this._markerSearch)
+
+					e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
+					if(e.layer._popup)
+						e.layer.openPopup();
+
+				}).on('search:collapsed', function(e) {
+
+					featuresLayer.eachLayer(function(layer) {	//restore feature color
+						featuresLayer.resetStyle(layer);
+					});	
+				});
+				
+				mymap.addControl( searchControl );  //inizialize search control
+
+				
 				river_layer.addTo(mymap);
+				river_info_layer.addTo(mymap);
 				L.control.layers(baseMaps, null).addTo(mymap);				
 				
 				$('#map').on('click', '#btn1', function() {
