@@ -65,7 +65,26 @@
 				<div class="d-flex flex-column"><h2>手機螢幕尺寸</h2></div>
 			</div>-->
 			<div id="nm-screen" class="d-flex flex-column">
-				<div><h2>大河小溪全民齊督工</h2></div>
+				<nav class="navbar navbar-light bg-light navbar-expand-sm ">
+					<a class="navbar-brand" href="#">大河小溪全民齊督工</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarNav">					
+					<ul class="navbar-nav">
+						<li class="nav-item active">
+							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">關於我們</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">相關連結</a>
+						</li>
+					</ul>
+					</div>
+				</nav>
+				
 				<div id="map" class="container-fluid"></div>
 			</div>
 			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -87,7 +106,12 @@
 				var river_layer = L.geoJSON(river_geojson, {
 					pointToLayer: function (feature, latlng) {
 					},					
-					onEachFeature: onEachFeature
+					onEachFeature: onEachFeature,
+					style: {
+						"weight": 5,
+						"opacity": 0.5,
+						"color": "#66B2FF"
+					}
 				});
 				//river_layer.addTo(mymap);
 				/*
