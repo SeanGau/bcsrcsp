@@ -101,7 +101,10 @@
 				
 
 				function onEachFeature(features, layer) {
-					layer.bindPopup("name: " + features.properties.name + "<br>wikidata: " + features.properties.wikidata);
+					if(features['properties']['@relations'])
+						layer.bindPopup(features['properties']['@relations']);
+					else
+						layer.bindPopup("name: " + features.properties.name + "<br>wikidata: " + features.properties.wikidata + "<br>id: " + features.id);
 				}
 				
 				var river_info_layer = L.geoJSON(river_geojson, {
@@ -116,14 +119,12 @@
 				var river_layer = L.geoJSON(river_geojson, {
 					pointToLayer: function (feature, latlng) {
 					},					
-					onEachFeature: onEachFeature,
 					style: {
 						"weight": 3,
 						"opacity": 0.75,
 						"bubblingMouseEvents": false
 					}
 				});
-				//river_layer.addTo(mymap);
 				/*
 				var NorthWest = L.latLng(32.876668, 115.669328),
 					SouthEast = L.latLng(32.833433, 115.738169);
@@ -165,23 +166,16 @@
 
 				searchControl.on('search:locationfound', function(e) {
 					
-					//console.log('search:locationfound', );
-
-					//map.removeLayer(this._markerSearch)
-
 					e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
 					if(e.layer._popup)
 						e.layer.openPopup();
 
 				}).on('search:collapsed', function(e) {
-
 					featuresLayer.eachLayer(function(layer) {	//restore feature color
 						featuresLayer.resetStyle(layer);
 					});	
-				});
-				
-				mymap.addControl( searchControl );  //inizialize search control
-
+				});				
+				mymap.addControl( searchControl );  //inizialize search control			
 				
 				river_layer.addTo(mymap);
 				river_info_layer.addTo(mymap);
