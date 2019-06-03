@@ -7,9 +7,10 @@
 		<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
-		<link rel="stylesheet" href="leaflet-search.css" />
+		<link rel="stylesheet" href="src/leaflet.fusesearch.css" />
 		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"  integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="  crossorigin=""></script>
-		<script src="leaflet-search.js"></script>
+		<script src="src/fuse.js"></script>
+		<script src="src/leaflet.fusesearch.js"></script>
 		<script src="src/osm_river.geojson"></script>
 		<link href="http://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet" type="text/css">
 		<style>  <!--視窗大小控制-->
@@ -101,6 +102,7 @@
 				
 
 				function onEachFeature(features, layer) {
+					features.layer = layer;
 					if(features['properties']['@relations'])
 						layer.bindPopup(features['properties']['@relations']);
 					else
@@ -148,37 +150,15 @@
 					//"空照街道": satellite_street,
 					"街道圖": streets,
 				};
-				
+				/*
 				var overlayMaps = {			
 					"河川河道": river_layer,
-				};								
-
-				var searchControl = new L.Control.Search({
-					layer: river_layer,
-					propertyName: 'name',
-					marker: false,
-					moveToLocation: function(latlng, title, map) {
-						//map.fitBounds( latlng.layer.getBounds() );
-						var zoom = map.getBoundsZoom(latlng.layer.getBounds());
-						map.setView(latlng, zoom); // access the zoom
-					}
-				});
-
-				searchControl.on('search:locationfound', function(e) {
-					
-					e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
-					if(e.layer._popup)
-						e.layer.openPopup();
-
-				}).on('search:collapsed', function(e) {
-					featuresLayer.eachLayer(function(layer) {	//restore feature color
-						featuresLayer.resetStyle(layer);
-					});	
-				});				
-				mymap.addControl( searchControl );  //inizialize search control			
-				
-				river_layer.addTo(mymap);
+				};								*/
+				var searchCtrl = L.control.fuseSearch()
+				searchCtrl.addTo(mymap);
+				searchCtrl.indexFeatures(river_geojson, ['name', '@company']);
 				river_info_layer.addTo(mymap);
+				river_layer.addTo(mymap);
 				L.control.layers(baseMaps, null).addTo(mymap);				
 				
 				$('#map').on('click', '#btn1', function() {
