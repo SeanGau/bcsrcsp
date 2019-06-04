@@ -1,6 +1,7 @@
 
 .leaflet-fusesearch-control {
-    box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+    #box-shadow: 0 0 3px rgba(0,0,0,0.6);
+	border: 2px solid rgba(0,0,0,0.4);
     background: #fff;
     border-radius: 5px;
 }
@@ -20,9 +21,7 @@
 
 .leaflet-fusesearch-panel {
     position: absolute;
-    height: 100%;
-    width: 350px;
-    
+    height: 100%;    
     z-index: -1;
     opacity: 0;
     -webkit-transition: opacity 0.3s linear;
@@ -66,7 +65,7 @@
 }
 
 .leaflet-fusesearch-panel.visible {
-    opacity: 1;
+    opacity: 0.9;
     z-index: 2000;
 }
 
@@ -102,7 +101,7 @@
 
 .leaflet-fusesearch-panel .search-input {
     position: relative;
-    top: 6px;
+    top: 3px;
     left: 3px;
 }
 
@@ -128,19 +127,19 @@
 
 @media (min-width: 321px) and (max-width: 480px) {
     .leaflet-fusesearch-panel {
-        width: 250px;
+        width: 200px;
         padding: 0;
     }
 }
 
 @media (min-width: 481px) and (max-width: 768px) {
     .leaflet-fusesearch-panel {
-        width: 300px;
+        width: 250px;
     }
 }
 
 @media (min-width: 769px) {
     .leaflet-fusesearch-panel {
-        width: 350px;
+        width: 300px;
     }
 }

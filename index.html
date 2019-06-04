@@ -5,10 +5,10 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title>BCSRCSP</title>
 		<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico">
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
-		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
 		<link rel="stylesheet" href="src/leaflet.fusesearch.css" />
-		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"  integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="  crossorigin=""></script>
+		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 		<script src="src/fuse.js"></script>
 		<script src="src/leaflet.fusesearch.js"></script>
 		<script src="src/osm_river.geojson"></script>
@@ -78,10 +78,10 @@
 							<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">關於我們</a>
+							<a class="nav-link" target="_blank" href="http://bambooculture.com/about">關於我們</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">相關連結</a>
+							<a class="nav-link" target="_blank" href="https://beta.hackfoldr.org/bcsrcsp">相關連結</a>
 						</li>
 					</ul>
 					</div>
@@ -89,9 +89,9 @@
 				
 				<div id="map" class="container-fluid"></div>
 			</div>
-			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 			<script>
 				var mbAttr = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://www.mapbox.com/">mapbox</a> ',
 					mbUrl = 'https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoianMwMDE5MyIsImEiOiJjandjYWtwem0wYnB3NDlvN2h0anRuM3Z1In0.Y7tYEgVHjszA66NQ08PVYg'
@@ -103,10 +103,18 @@
 
 				function onEachFeature(features, layer) {
 					features.layer = layer;
-					if(features['properties']['@relations'])
-						layer.bindPopup(features['properties']['@relations']);
-					else
-						layer.bindPopup("name: " + features.properties.name + "<br>wikidata: " + features.properties.wikidata + "<br>id: " + features.id);
+					var name, wikiid, osmid;
+					if(features['properties']['@relations'] && features['properties']['@relations']['reltags']){
+						name = features['properties']['@relations']['reltags']['name'];
+						wikiid = features['properties']['@relations']['reltags']['wikidata'];
+						osmid = "rel/" + features['properties']['@relations']['rel'];						
+					}
+					else{
+						name = features.properties.name;
+						wikiid = features.properties.wikidata;
+						osmid = features.id;
+					}
+					layer.bindPopup('<button class="btn btn-info" id="'+osmid+'">訂閱'+name+'</button><p>wikidata: ' + wikiid + "<br>id: " + osmid+"</p>");
 				}
 				
 				var river_info_layer = L.geoJSON(river_geojson, {
@@ -139,15 +147,12 @@
 					minZoom: 7,
 					layers: [satellite, streets],
 					zoomControl:true
-				});				
-				var btn1id="btn1";				
-				L.marker([25.1426293,121.4592866]).addTo(mymap).bindPopup(' <button class="btn btn-info" id="'+btn1id+'">CLICK ME</button><p>hello</p> ');
-				
-				
+				});		
 				
 				var baseMaps = {
 					"空照圖": satellite,
 					//"空照街道": satellite_street,
+					
 					"街道圖": streets,
 				};
 				/*
@@ -156,7 +161,7 @@
 				};								*/
 				var searchCtrl = L.control.fuseSearch()
 				searchCtrl.addTo(mymap);
-				searchCtrl.indexFeatures(river_geojson, ['name', '@company']);
+				searchCtrl.indexFeatures(river_geojson, ['name', '@id','wikidata']);
 				river_info_layer.addTo(mymap);
 				river_layer.addTo(mymap);
 				L.control.layers(baseMaps, null).addTo(mymap);				
