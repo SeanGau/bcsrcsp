@@ -1,9 +1,14 @@
-<!DOCTYPE html>
+<?php session_start(); ?>
 <html lang="zh-Hant-TW">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<title>BCSRCSP</title>
+		<?php
+		if($_SESSION['email'] != null)
+			echo "<title>" . $_SESSION['email'] . "</title>";
+		else
+			echo "<title>大河小溪全民齊督工</title>";			
+		?>
 		<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico">
 		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
@@ -11,7 +16,6 @@
 		<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 		<script src="src/fuse.js"></script>
 		<script src="src/leaflet.fusesearch.js"></script>
-		<script src="src/osm_river.geojson"></script>
 		<link href="http://fonts.googleapis.com/earlyaccess/notosanstc.css" rel="stylesheet" type="text/css">
 		<style>  <!--視窗大小控制-->
 		<!--
@@ -89,6 +93,7 @@
 				
 				<div id="map" class="container-fluid"></div>
 			</div>
+			<script src="src/osm_river.geojson"></script>
 			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
