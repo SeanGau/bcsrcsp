@@ -4,7 +4,7 @@ from urllib.parse import quote
 date_api_url = "https://pcc.g0v.ronny.tw/api/listbydate?date="
 
 keywords_list = []
-json_file=open('foo.json')
+json_file=open('wikidata_query.json')
 json_data = json.load(json_file)
 #for p in json_data['results']['bindings']:
 #	keywords_list.append(p['itemLabel']['value'])
@@ -16,7 +16,7 @@ date_a = datetime.datetime.today()
 date_b = datetime.datetime.strptime(date_input, date_format)
 delta_days = (date_b - date_a).days+1
 #time_str = datetime.date.today().strftime("%Y%m%d")
-with open("out.json", "w+") as fo:
+with open("pcc.json", "w+") as fo:
 	fo.write("[")
 	while delta_days<=0:
 		dated_url = date_api_url + (date_a + datetime.timedelta(days=delta_days)).strftime("%Y%m%d")
