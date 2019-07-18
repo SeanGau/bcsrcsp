@@ -148,12 +148,12 @@
 				var mymap = L.map('map', {
 					center: [25.1426293,121.4592866],
 					zoom: 18,
-					maxZoom: 20,
+					maxZoom: 18,
 					minZoom: 7,
 					layers: [satellite, streets],
 					zoomControl:true
 				});		
-				L.marker([25.1426293,121.4592866]).addTo(mymap)
+				
 				var baseMaps = {
 					"空照圖": satellite,
 					//"空照街道": satellite_street,
